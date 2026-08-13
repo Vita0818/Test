@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +7,13 @@
     <meta
       name="description"
       content="Vita 的数学分析/微积分 PDF 浏览站，资料托管于 Google Drive。"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -33,28 +40,46 @@
           <p>祝玩得开心！</p>
         </div>
       </div>
-      <a
-        id="openAllBtn"
-        class="btn"
-        href="https://drive.google.com/drive/folders/1onVR2v7-_WzvPypCS8r8NX8wMphymSpb?usp=drive_link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        打开全部资料文件夹
-      </a>
+      <div class="header-actions">
+        <button
+          id="themeToggle"
+          class="btn ghost icon-btn"
+          type="button"
+          aria-label="切换深色/浅色模式"
+          title="切换深色/浅色模式"
+        >
+          <span class="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+        <a
+          id="openAllBtn"
+          class="btn"
+          href="https://drive.google.com/drive/folders/1onVR2v7-_WzvPypCS8r8NX8wMphymSpb?usp=drive_link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          打开全部资料文件夹
+        </a>
+      </div>
     </header>
 
     <section class="toolbar card">
-      <input id="searchInput" type="search" placeholder="搜索文件夹或 PDF..." aria-label="搜索" />
-      <button id="backBtn" class="btn ghost" type="button">返回上一级</button>
+      <button id="sidebarToggle" class="btn ghost icon-btn sidebar-toggle" type="button" aria-expanded="false" aria-controls="folderTree">
+        <span aria-hidden="true">☰</span> 文件夹
+      </button>
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索文件夹或 PDF..." aria-label="搜索" />
+      </div>
+      <button id="backBtn" class="btn ghost" type="button">← 返回上一级</button>
       <nav id="breadcrumb" class="breadcrumb" aria-label="当前路径"></nav>
     </section>
 
     <main class="layout">
-      <aside class="sidebar card">
+      <aside class="sidebar card" id="sidebarPanel">
         <h2>文件夹</h2>
         <nav id="folderTree" class="folder-tree" aria-label="完整文件夹树"></nav>
       </aside>
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
       <section class="file-view card">
         <div class="view-head">
@@ -64,6 +89,10 @@
         <div id="contentList" class="content-list"></div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>Vita's Analysis Notes · 用心整理，欢迎学习交流</p>
+    </footer>
 
     <script src="script.js"></script>
   </body>

@@ -24,6 +24,55 @@ const contentList = document.getElementById("contentList");
 const viewTitle = document.getElementById("viewTitle");
 const resultCount = document.getElementById("resultCount");
 const openAllBtn = document.getElementById("openAllBtn");
+const themeToggle = document.getElementById("themeToggle");
+const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebarPanel = document.getElementById("sidebarPanel");
+const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+const THEME_KEY = "vita-site-theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const icon = themeToggle?.querySelector(".theme-icon");
+  if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+  if (themeToggle) {
+    themeToggle.setAttribute(
+      "aria-label",
+      theme === "dark" ? "切换为浅色模式" : "切换为深色模式"
+    );
+  }
+}
+
+function initTheme() {
+  const stored = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(stored || (prefersDark ? "dark" : "light"));
+}
+
+themeToggle?.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme") || "light";
+  const next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+  localStorage.setItem(THEME_KEY, next);
+});
+
+function openSidebar() {
+  sidebarPanel?.classList.add("open");
+  sidebarBackdrop?.classList.add("open");
+  sidebarToggle?.setAttribute("aria-expanded", "true");
+}
+function closeSidebar() {
+  sidebarPanel?.classList.remove("open");
+  sidebarBackdrop?.classList.remove("open");
+  sidebarToggle?.setAttribute("aria-expanded", "false");
+}
+sidebarToggle?.addEventListener("click", () => {
+  if (sidebarPanel?.classList.contains("open")) closeSidebar();
+  else openSidebar();
+});
+sidebarBackdrop?.addEventListener("click", closeSidebar);
+
+initTheme();
 
 function safeNode(node) {
   const title = node?.title || "未命名";
@@ -96,6 +145,7 @@ function setCurrentFolderByPathKey(pathKey) {
   currentFolder = target;
   currentPath = buildPathFromNode(target);
   render();
+  closeSidebar();
 }
 
 function renderFolderTree() {
